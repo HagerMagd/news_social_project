@@ -26,7 +26,12 @@ Route::group([
     Route::post('new-subscribe',[NewsSubscribController::class,'store'])->name('new.subscribe');
     Route::get('category/{slug}',CategoryController::class)->name('category.posts');
     Route::get('posts/{slug}',[FrontendShowPostsController::class,'showposts'])->name('show.posts');
-});
-Auth::routes();
+    Route::get('posts/comments/{slug}',[FrontendShowPostsController::class,'GetAllPosts'])->name('post.get-all-comments');
+    Route::post('posts/comment/store', [FrontendShowPostsController::class, 'storecomment'])->name('posts.comments.store');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+});
+
+
+Auth::routes();
+  
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

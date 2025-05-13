@@ -39,15 +39,11 @@ class CheckSettingProvider extends ServiceProvider
             ]);
         });
 
-        //share related 
-        $relatedsites=RelatedNewsSite::Select('name','url')->get();
-        //share Categories
-        $categories=Category::Select ('name','slug')->get();
+      
 
         view()->share([
             'getsetting'=> $getsetting,
-            'relatedsites'=> $relatedsites,
-            'categories'=>$categories,
+            
         ]);
         
     }

@@ -1,375 +1,293 @@
 @extends('layouts.frontend.app')
 @section('body')
-      <!-- Single News Start-->
-      <div class="single-news">
+    <!-- Single News Start-->
+    <div class="single-news">
         <div class="container">
-          <div class="row">
-            <div class="col-lg-8">
-                <!-- Carousel -->
-                <div id="newsCarousel" class="carousel slide" data-ride="carousel">
-                  <ol class="carousel-indicators">
-                    <li data-target="#newsCarousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#newsCarousel" data-slide-to="1"></li>
-                    <li data-target="#newsCarousel" data-slide-to="2"></li>
-                  </ol>
-                  <div class="carousel-inner">
-                    @foreach ( $post->images as $image )
-                    {{-- To make the first image appear in slide and the other one after it --}}
-                    <div class="carousel-item  @if($loop->index==0)active @endif">
-                      <img src="{{$image->path}}" class="d-block w-100" alt="First Slide" 
-                     >
-                      <div class="carousel-caption d-none d-md-block">
-                        <h5>{{$post->title}}</h5>
-                        <p>
-                         {{substr($post->desc,0,80)}}
-                        </p>
-                      </div>
-                    </div>
-                    @endforeach
-                     
-                    <!-- Add more carousel-item blocks for additional slides -->
-                  </div>
-                  <a class="carousel-control-prev" href="#newsCarousel" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                  </a>
-                  <a class="carousel-control-next" href="#newsCarousel" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                  </a>
-                </div>
-              
-  
-                <!-- Comment Section -->
-                <div class="comment-section">
-                  <!-- Comment Input -->
-                  <div class="comment-input">
-                    <input type="text" placeholder="Add a comment..." id="commentBox" />
-                    <button id="addCommentBtn">Post</button>
-                  </div>
-  
-                  <!-- Display Comments -->
-                  <div class="comments">
-                    <div class="comment">
-                      <img src="./img/news-450x350-2.jpg" alt="User Image" class="comment-img" />
-                      <div class="comment-content">
-                        <span class="username">User1</span>
-                        <p class="comment-text">This is an example comment.</p>
-                      </div>
-                    </div>
-                    <div class="comment">
-                      <img src="./img/news-450x350-2.jpg" alt="User Image" class="comment-img" />
-                      <div class="comment-content">
-                        <span class="username">User2</span>
-                        <p class="comment-text">This is an example comment.</p>
-                      </div>
-                    </div>
-                    <!-- Add more comments here for demonstration -->
-                  </div>
-  
-                  <!-- Show More Button -->
-                  <button id="showMoreBtn" class="show-more-btn">Show more</button>
-                </div>
-  
-                <!-- Related News -->
-                <div class="sn-related">
-                  <h2>Related News</h2>
-                  <div class="row sn-slider">
-                    <div class="col-md-4">
-                      <div class="sn-img">
-                        <img src="img/news-350x223-1.jpg" class="img-fluid" alt="Related News 1" />
-                        <div class="sn-title">
-                          <a href="#">Interdum et fames ac ante</a>
+            <div class="row">
+                <div class="col-lg-8">
+                    <!-- Carousel -->
+                    <div id="newsCarousel" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#newsCarousel" data-slide-to="0" class="active"></li>
+                            <li data-target="#newsCarousel" data-slide-to="1"></li>
+                            <li data-target="#newsCarousel" data-slide-to="2"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            @foreach ($mainpost->images as $image)
+                                {{-- To make the first image appear in slide and the other one after it --}}
+                                <div class="carousel-item @if ($loop->index == 0) active @endif">
+                                    <img src="{{ $image->path }}" class="d-block w-100" alt="{{ $mainpost->title }}"
+                                        title="{{ $mainpost->title }}">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5 title="{{ $mainpost->title }}">{{ $mainpost->title }}</h5>
+                                        <p>
+                                            {{ substr($mainpost->desc, 0, 80) }}
+                                        </p>
+                                    </div>
+                                </div>
+                            @endforeach
+
+                            <!-- Add more carousel-item blocks for additional slides -->
                         </div>
-                      </div>
+                        <a class="carousel-control-prev" href="#newsCarousel" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#newsCarousel" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
                     </div>
-                    <div class="col-md-4">
-                      <div class="sn-img">
-                        <img src="img/news-350x223-2.jpg" class="img-fluid" alt="Related News 2" />
-                        <div class="sn-title">
-                          <a href="#">Interdum et fames ac ante</a>
+
+                    <div class="sn-content">
+                        {{-- post content --}}
+                        {{ $mainpost->desc }}
+                    </div>
+                    <!-- Comment Section -->
+                    <div class="comment-section">
+                        <!-- Comment Input -->
+                        <form id="commentform" >
+                            @csrf
+                            <div class="comment-input">
+                                <input name="comment" type="text" placeholder="Add a comment..." id="commentBox" />
+                                <input type="hidden" name="users_id" value="1">
+                                <input type="hidden" name="post_id" value="{{ $mainpost->id }}">
+                                <button id="addCommentBtn" type="submit">Add Comment</button>
+                            </div>
+                        </form>
+                        <div id="errormsg" class="alert alert-danger" style="display: none"></div>
+                        <!-- Display Comments -->
+                        <div class="comments">
+                            @foreach ($mainpost->comments as $comment)
+                                <div class="comment">
+                                    <img src="{{ $comment->user->image }}"alt="User Image" class="comment-img" />
+                                    <div class="comment-content">
+                                        <span class="username">{{ $comment->user->name }}</span>
+                                        <p class="comment-text">{{ $comment->comment }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+
+
+                            <!-- Add more comments here for demonstration -->
                         </div>
-                      </div>
+
+                        <!-- Show More Button -->
+                        <button id="showMoreBtn" class="show-more-btn"
+                            data-url="{{ route('frontend.post.get-all-comments', $mainpost->slug) }}">Show more</button>
                     </div>
-                    <div class="col-md-4">
-                      <div class="sn-img">
-                        <img src="img/news-350x223-3.jpg" class="img-fluid" alt="Related News 3" />
-                        <div class="sn-title">
-                          <a href="#">Interdum et fames ac ante</a>
+
+                    <!-- Related News -->
+                    <div class="sn-related">
+                        <h2>Related News</h2>
+                        <div class="row sn-slider">
+                            @foreach ($belongs_posts as $post)
+                                <div class="col-md-4">
+                                    <div class="sn-img">
+                                        <img src="{{ $post->images->first()->path }}" class="img-fluid"
+                                            alt="{{ $post->title }}" />
+                                        <div class="sn-title">
+                                            <a href="{{ route('frontend.show.posts', $post->slug) }}"
+                                                title="{{ $post->title }}">{{ $post->title }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+
+
                         </div>
-                      </div>
                     </div>
-                    <div class="col-md-4">
-                      <div class="sn-img">
-                        <img src="img/news-350x223-4.jpg" class="img-fluid" alt="Related News 4" />
-                        <div class="sn-title">
-                          <a href="#">Interdum et fames ac ante</a>
-                        </div>
-                      </div>
-                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="sidebar">
+                        <div class="sidebar-widget">
+                            <h2 class="sw-title">In This Category</h2>
+                            <div class="news-list">
+                                @foreach ($belongs_posts as $post)
+                                    <div class="nl-item">
+                                        <div class="nl-img">
+                                            <img src="{{ $post->images->first()->path }}" />
+                                        </div>
+                                        <div class="nl-title">
+                                            <a href="{{ route('frontend.show.posts', $post->slug) }}"
+                                                title="{{ $post->title }}">{{ $post->title }}</a>
+
+                                        </div>
+                                    </div>
+                                @endforeach
+
+
+                            </div>
+
+                            {{-- <div class="sidebar-widget">
+                  <div class="image">
+                    <a href="https://htmlcodex.com"
+                      ><img src="img/ads-2.jpg" alt="Image"
+                    /></a>
                   </div>
-                </div>
-              </div>
-  
-            <div class="col-lg-4">
-              <div class="sidebar">
-                <div class="sidebar-widget">
-                  <h2 class="sw-title">In This Category</h2>
-                  <div class="news-list">
-                    @foreach ($posts_belongsto_category as $post )
-                    <div class="nl-item">
-                      <div class="nl-img">
-                        <img src="{{$post->images->first()->path}}" />
-                      </div>
-                      <div class="nl-title">
-                        <a href="{{route('frontend.show.posts',$post->slug)}}" title="{{$post->title}}">{{$post->title}}</a
-                        >
-                      </div>
-                    </div>
-                    @endforeach
-                   
-                   
-                </div>
-  
+                </div> --}}
+
+                            <div class="sidebar-widget">
+                                <div class="tab-news">
+                                    <ul class="nav nav-pills nav-justified">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" data-toggle="pill" href="#featured">Latest</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="pill" href="#popular">Popular</a>
+                                        </li>
+
+                                    </ul>
+
+                                    <div class="tab-content">
+                                        <div id="featured" class="container tab-pane active">
+                                            @foreach ($latest_posts as $post)
+                                                <div class="tn-news">
+                                                    <div class="tn-img">
+                                                        <img
+                                                            src="{{ $post->images()->first()->path }}"alt="{{ $post->title }}" />
+                                                    </div>
+                                                    <div class="tn-title">
+                                                        <a href="{{ route('frontend.show.posts', $post->slug) }}"
+                                                            title="{{ $post->title }}">{{ $post->title }}</a>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+
+
+                                        </div>
+                                        <div id="popular" class="container tab-pane fade">
+                                            @foreach ($popular_posts as $post)
+                                                <div class="tn-news">
+                                                    <div class="tn-img">
+                                                        <img
+                                                            src="{{ $post->images()->first()->path }}"alt="{{ $post->title }}" />
+                                                    </div>
+                                                    <div class="tn-title">
+                                                        <a href="{{ route('frontend.show.posts', $post->slug) }}"
+                                                            title="{{ $post->title }}">{{ $post->title }}</a>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                {{--   
                 <div class="sidebar-widget">
                   <div class="image">
                     <a href="https://htmlcodex.com"
                       ><img src="img/ads-2.jpg" alt="Image"
                     /></a>
                   </div>
-                </div>
-  
-                <div class="sidebar-widget">
-                  <div class="tab-news">
-                    <ul class="nav nav-pills nav-justified">
-                      <li class="nav-item">
-                        <a
-                          class="nav-link active"
-                          data-toggle="pill"
-                          href="#featured"
-                          >Featured</a
-                        >
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" data-toggle="pill" href="#popular"
-                          >Popular</a
-                        >
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" data-toggle="pill" href="#latest"
-                          >Latest</a
-                        >
-                      </li>
-                    </ul>
-  
-                    <div class="tab-content">
-                      <div id="featured" class="container tab-pane active">
-                        <div class="tn-news">
-                          <div class="tn-img">
-                            <img src="img/news-350x223-1.jpg" />
-                          </div>
-                          <div class="tn-title">
-                            <a href=""
-                              >Lorem ipsum dolor sit amet consec adipis elit</a
-                            >
-                          </div>
+                </div> --}}
+
+                                <div class="sidebar-widget">
+                                    <h2 class="sw-title">News Category</h2>
+                                    <div class="category">
+                                        <ul>
+                                            @foreach ($categories as $category)
+                                                <li><a
+                                                        href="{{ route('frontend.show.posts', $post->slug) }}">{{ $category->name }}</a><span>({{ $category->posts->count() }})</span>
+                                                </li>
+                                            @endforeach
+
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="sidebar-widget">
+                                    <h2 class="sw-title">Tags Cloud</h2>
+                                    <div class="tags">
+                                        <a href="">National</a>
+                                        <a href="">International</a>
+                                        <a href="">Economics</a>
+                                        <a href="">Politics</a>
+                                        <a href="">Lifestyle</a>
+                                        <a href="">Technology</a>
+                                        <a href="">Trades</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="tn-news">
-                          <div class="tn-img">
-                            <img src="img/news-350x223-2.jpg" />
-                          </div>
-                          <div class="tn-title">
-                            <a href=""
-                              >Lorem ipsum dolor sit amet consec adipis elit</a
-                            >
-                          </div>
-                        </div>
-                        <div class="tn-news">
-                          <div class="tn-img">
-                            <img src="img/news-350x223-3.jpg" />
-                          </div>
-                          <div class="tn-title">
-                            <a href=""
-                              >Lorem ipsum dolor sit amet consec adipis elit</a
-                            >
-                          </div>
-                        </div>
-                        <div class="tn-news">
-                          <div class="tn-img">
-                            <img src="img/news-350x223-4.jpg" />
-                          </div>
-                          <div class="tn-title">
-                            <a href=""
-                              >Lorem ipsum dolor sit amet consec adipis elit</a
-                            >
-                          </div>
-                        </div>
-                        <div class="tn-news">
-                          <div class="tn-img">
-                            <img src="img/news-350x223-5.jpg" />
-                          </div>
-                          <div class="tn-title">
-                            <a href=""
-                              >Lorem ipsum dolor sit amet consec adipis elit</a
-                            >
-                          </div>
-                        </div>
-                      </div>
-                      <div id="popular" class="container tab-pane fade">
-                        <div class="tn-news">
-                          <div class="tn-img">
-                            <img src="img/news-350x223-4.jpg" />
-                          </div>
-                          <div class="tn-title">
-                            <a href=""
-                              >Lorem ipsum dolor sit amet consec adipis elit</a
-                            >
-                          </div>
-                        </div>
-                        <div class="tn-news">
-                          <div class="tn-img">
-                            <img src="img/news-350x223-3.jpg" />
-                          </div>
-                          <div class="tn-title">
-                            <a href=""
-                              >Lorem ipsum dolor sit amet consec adipis elit</a
-                            >
-                          </div>
-                        </div>
-                        <div class="tn-news">
-                          <div class="tn-img">
-                            <img src="img/news-350x223-2.jpg" />
-                          </div>
-                          <div class="tn-title">
-                            <a href=""
-                              >Lorem ipsum dolor sit amet consec adipis elit</a
-                            >
-                          </div>
-                        </div>
-                        <div class="tn-news">
-                          <div class="tn-img">
-                            <img src="img/news-350x223-1.jpg" />
-                          </div>
-                          <div class="tn-title">
-                            <a href=""
-                              >Lorem ipsum dolor sit amet consec adipis elit</a
-                            >
-                          </div>
-                        </div>
-                        <div class="tn-news">
-                          <div class="tn-img">
-                            <img src="img/news-350x223-2.jpg" />
-                          </div>
-                          <div class="tn-title">
-                            <a href=""
-                              >Lorem ipsum dolor sit amet consec adipis elit</a
-                            >
-                          </div>
-                        </div>
-                      </div>
-                      <div id="latest" class="container tab-pane fade">
-                        <div class="tn-news">
-                          <div class="tn-img">
-                            <img src="img/news-350x223-3.jpg" />
-                          </div>
-                          <div class="tn-title">
-                            <a href=""
-                              >Lorem ipsum dolor sit amet consec adipis elit</a
-                            >
-                          </div>
-                        </div>
-                        <div class="tn-news">
-                          <div class="tn-img">
-                            <img src="img/news-350x223-4.jpg" />
-                          </div>
-                          <div class="tn-title">
-                            <a href=""
-                              >Lorem ipsum dolor sit amet consec adipis elit</a
-                            >
-                          </div>
-                        </div>
-                        <div class="tn-news">
-                          <div class="tn-img">
-                            <img src="img/news-350x223-5.jpg" />
-                          </div>
-                          <div class="tn-title">
-                            <a href=""
-                              >Lorem ipsum dolor sit amet consec adipis elit</a
-                            >
-                          </div>
-                        </div>
-                        <div class="tn-news">
-                          <div class="tn-img">
-                            <img src="img/news-350x223-4.jpg" />
-                          </div>
-                          <div class="tn-title">
-                            <a href=""
-                              >Lorem ipsum dolor sit amet consec adipis elit</a
-                            >
-                          </div>
-                        </div>
-                        <div class="tn-news">
-                          <div class="tn-img">
-                            <img src="img/news-350x223-3.jpg" />
-                          </div>
-                          <div class="tn-title">
-                            <a href=""
-                              >Lorem ipsum dolor sit amet consec adipis elit</a
-                            >
-                          </div>
-                        </div>
-                      </div>
                     </div>
-                  </div>
                 </div>
-  
-                <div class="sidebar-widget">
-                  <div class="image">
-                    <a href="https://htmlcodex.com"
-                      ><img src="img/ads-2.jpg" alt="Image"
-                    /></a>
-                  </div>
-                </div>
-  
-                <div class="sidebar-widget">
-                  <h2 class="sw-title">News Category</h2>
-                  <div class="category">
-                    <ul>
-                      <li><a href="">National</a><span>(98)</span></li>
-                      <li><a href="">International</a><span>(87)</span></li>
-                      <li><a href="">Economics</a><span>(76)</span></li>
-                      <li><a href="">Politics</a><span>(65)</span></li>
-                      <li><a href="">Lifestyle</a><span>(54)</span></li>
-                      <li><a href="">Technology</a><span>(43)</span></li>
-                      <li><a href="">Trades</a><span>(32)</span></li>
-                    </ul>
-                  </div>
-                </div>
-  
-                <div class="sidebar-widget">
-                  <div class="image">
-                    <a href="https://htmlcodex.com"
-                      ><img src="img/ads-2.jpg" alt="Image"
-                    /></a>
-                  </div>
-                </div>
-  
-                <div class="sidebar-widget">
-                  <h2 class="sw-title">Tags Cloud</h2>
-                  <div class="tags">
-                    <a href="">National</a>
-                    <a href="">International</a>
-                    <a href="">Economics</a>
-                    <a href="">Politics</a>
-                    <a href="">Lifestyle</a>
-                    <a href="">Technology</a>
-                    <a href="">Trades</a>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <!-- Single News End-->
-@endsection
+            <!-- Single News End-->
+        @endsection
+        @push('js')
+            <script>
+                // تفريغ محتوي الكومنتات عن الضغط علي الزر حتي لا تتكرر التعليقات مرة اخري
+                // data -> array content
+                //key -> comment index
+                //'comment'->   div class for comments
+
+                //show all comments
+                $(document).on('click', '#showMoreBtn', function(e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: "{{ route('frontend.post.get-all-comments', $mainpost->slug) }}",
+                        type: "GET",
+                        success: function(data) {
+                            console.log(data);
+                            $('.comments').empty();
+                            $.each(data, function(key, $comment) { // loop 
+                                $('.comments').append(`
+                        <div class="comment">
+                          <img src="${$comment.user.image}" alt="User Image" class="comment-img" />
+                          <div class="comment-content">
+                              <span class="username">${$comment.user.name}</span>
+                              <p class="comment-text">${$comment.comment}</p>
+                          </div>
+                        </div>`);
+
+                                $('#showMoreBtn').hide(); // to hide button after show all comments
+
+                            });
+                        },
+                        error: function(date) {},
+
+                    });
+
+                });
+                // store comments
+                
+                $(document).on('submit','#commentform', function(e) {
+                    e.preventDefault();
+                    var formData= new FormData($(this)[0]);
+                    
+                    $.ajax({
+                        url:"{{route('frontend.posts.comments.store')}}",
+                        type:'Post',
+                        data:formData,
+                        processData:false,
+                        contentType:false,
+                        
+                        success:function(data){
+                            $('#commentBox').val(''); // empty comment after stored
+                            $('#errormsg').hide(); // to hide error div in case add right comment
+                            $('.comments').prepend(` <div class="comment">
+                                    <img src="${data.comment.user.image}"alt="User Image" class="comment-img" />
+                                    <div class="comment-content">
+                                        <span class="username">${data.comment.user.name}</span>
+                                        <p class="comment-text">${data.comment.comment}</p>
+                                    </div>
+                                </div>`);
+
+                        },
+                        error:function(data){
+                        var response= $.parseJSON(data.responseText);
+                        $('#errormsg').text(response.errors.comment).show();
+
+                    },
+
+                    });
+                    
+                });
+            </script>
+        @endpush
