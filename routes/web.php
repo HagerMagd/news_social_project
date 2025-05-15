@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\frontend\CategoryController;
+use App\Http\Controllers\frontend\ContactController;
 use App\Http\Controllers\frontend\HomeController;
 use App\Http\Controllers\frontend\NewsSubscribController;
 use App\Http\Controllers\frontend\ShowPostsController as FrontendShowPostsController;
@@ -28,7 +29,8 @@ Route::group([
     Route::get('posts/{slug}',[FrontendShowPostsController::class,'showposts'])->name('show.posts');
     Route::get('posts/comments/{slug}',[FrontendShowPostsController::class,'GetAllPosts'])->name('post.get-all-comments');
     Route::post('posts/comment/store', [FrontendShowPostsController::class, 'storecomment'])->name('posts.comments.store');
-
+    Route::get('contact-us',[ContactController::class,'index'])->name('contact.index');
+    Route::post('contact-us/store',[ContactController::class,'store'])->name('contact.store');
 });
 
 

@@ -281,6 +281,7 @@
 
                         },
                         error:function(data){
+                            
                         var response= $.parseJSON(data.responseText);
                         $('#errormsg').text(response.errors.comment).show();
 
