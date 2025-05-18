@@ -4,6 +4,7 @@ use App\Http\Controllers\frontend\CategoryController;
 use App\Http\Controllers\frontend\ContactController;
 use App\Http\Controllers\frontend\HomeController;
 use App\Http\Controllers\frontend\NewsSubscribController;
+use App\Http\Controllers\frontend\SearchController;
 use App\Http\Controllers\frontend\ShowPostsController as FrontendShowPostsController;
 use App\Http\Controllers\ShowPostsController;
 use Illuminate\Support\Facades\Auth;
@@ -39,6 +40,9 @@ Route::group([
     Route::get('/','index')->name('index');
     Route::post('/store','store')->name('store');
     });
+
+    // for search request
+    Route::match(['post','get'],'search',SearchController::class)->name('search');
    
 });
 

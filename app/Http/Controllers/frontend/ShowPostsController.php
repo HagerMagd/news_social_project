@@ -12,7 +12,7 @@ class ShowPostsController extends Controller
     public function showposts($slug)
     {
         
-       $mainpost= Post::with(['comments'=>function($query){
+       $mainpost= Post::active()->with(['comments'=>function($query){
         $query->latest()->limit(3);
        }])-> whereslug($slug)->firstorFail();
        $category= $mainpost->catgegory; //العلاقة
@@ -24,7 +24,7 @@ class ShowPostsController extends Controller
     }
 
     public function GetAllPosts($slug){
-        $post= Post::whereSlug($slug)->first();
+        $post= Post::active()->whereSlug($slug)->first();
        $comments= $post->comments()->with('user')->get();
        return response()->json($comments);
 }
