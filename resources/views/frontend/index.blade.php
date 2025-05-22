@@ -3,7 +3,11 @@
  @php
    $latest_three_posts=$posts->take(3);
   @endphp
-
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
  <!-- Top News Start-->
 
  <div class="top-news">

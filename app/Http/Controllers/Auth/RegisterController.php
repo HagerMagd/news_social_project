@@ -1,17 +1,15 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
-use session;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
 
 class RegisterController extends Controller
 {
@@ -104,5 +102,13 @@ class RegisterController extends Controller
         return $request->wantsJson()
                     ? new JsonResponse([], 201)
                     : redirect($this->redirectPath());
+    }
+    protected function registered(Request $request, $user)
+    {
+        if(!$user){
+            Session::flash('error','Registration failed, please try again.');
+            return redirect()->back();
+        } Session::flash('success',' Registration process successful, welcome '.$user->name. ' !');
+            return redirect()->back();
     }
 }

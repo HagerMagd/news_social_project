@@ -8,6 +8,7 @@
       content="Bootstrap News Template - Free HTML Templates"
       name="keywords"
     />
+    
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <meta

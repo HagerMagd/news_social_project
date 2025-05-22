@@ -10,10 +10,17 @@
         </div>
         <div class="col-md-6">
           <div class="tb-menu">
-            <a href="">About</a>
-            <a href="">Privacy</a>
-            <a href="">Terms</a>
-            <a href="">Contact</a>
+            @guest
+              <a href="{{route('register')}}">Register</a>
+            <a href="{{route('login')}}">login</a>
+            @endguest
+            @auth
+              <a href="javascript:void(0)" onclick="
+              if(confirm('Do You Want To Log Out? ')){ document.getElementById('logoutform').submit()}"
+             >logout</a>
+            @endauth
+            <form id="logoutform" action="{{route('logout')}}" method="POST">@csrf</form>
+            
           </div>
         </div>
       </div>
