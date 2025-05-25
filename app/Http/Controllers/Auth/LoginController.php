@@ -26,7 +26,9 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+
+     // update from /home to /
+    //protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -42,5 +44,10 @@ class LoginController extends Controller
     {
     
         return redirect()->route('frontend.index')->with('success','you are log out , see you soon !');
+    }
+    protected function authenticated(Request $request, $user)
+    {
+                return redirect()->route('frontend.index')->with('success', 'welcome back ' .$user->name);
+
     }
 }

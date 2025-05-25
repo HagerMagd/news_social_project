@@ -90,7 +90,7 @@ class RegisterController extends Controller
         if($data['image']){
             $file=$data['image'];
             // make name for this image (Not to be repeated)
-            $filename=Str::slug($user->user_name).time().$file->getClientoriginalExtension();
+            $filename=Str::slug($user->name).time().$file->getClientoriginalExtension();
             // store image in local storge (my disk)
             $path=$file->storeAs('uploads/users',$filename,['disk'=>'uploads']);
             //store image in database
