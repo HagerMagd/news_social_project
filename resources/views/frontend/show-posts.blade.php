@@ -1,7 +1,7 @@
 @extends('layouts.frontend.app')
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active">{{$mainpost->title}}</li>
+    <li class="breadcrumb-item active">{{ $mainpost->title }}</li>
 @endsection
 @section('body')
     <!-- Single News Start-->
@@ -50,21 +50,26 @@
                     <!-- Comment Section -->
                     <div class="comment-section">
                         <!-- Comment Input -->
-                        <form id="commentform" >
-                            @csrf
-                            <div class="comment-input">
-                                <input name="comment" type="text" placeholder="Add a comment..." id="commentBox" />
-                                <input type="hidden" name="users_id" value="{{auth()->user()->id}}">
-                                <input type="hidden" name="post_id" value="{{ $mainpost->id}}">
-                                <button id="addCommentBtn" type="submit">Add Comment</button>
-                            </div>
-                        </form>
+                        @auth
+                            <form id="commentform">
+                                @csrf
+                                <div class="comment-input">
+                                    <input name="comment" type="text" placeholder="Add a comment..." id="commentBox" />
+                                    <input type="hidden" name="users_id" value="{{ auth()->user()->id }}">
+                                    <input type="hidden" name="post_id" value="{{ $mainpost->id }}">
+                                    <button id="addCommentBtn" type="submit">Add Comment</button>
+                                </div>
+                            </form>
+                        @else
+                            <div class="alert alert-info">You must be logged in to post a comment.</div>
+                        @endauth
+
                         <div id="errormsg" class="alert alert-danger" style="display: none"></div>
                         <!-- Display Comments -->
                         <div class="comments">
                             @foreach ($mainpost->comments as $comment)
                                 <div class="comment">
-                                    <img src="{{ $comment->user->image }}"alt="User Image" class="comment-img" />
+                                    <img src="{{ $comment->user->image }}"alt="User Image" class="comment-img" title="{{ $comment->user->image}}" />
                                     <div class="comment-content">
                                         <span class="username">{{ $comment->user->name }}</span>
                                         <p class="comment-text">{{ $comment->comment }}</p>
@@ -260,19 +265,19 @@
 
                 });
                 // store comments
-                
-                $(document).on('submit','#commentform', function(e) {
+
+                $(document).on('submit', '#commentform', function(e) {
                     e.preventDefault();
-                    var formData= new FormData($(this)[0]);
-                    
+                    var formData = new FormData($(this)[0]);
+
                     $.ajax({
-                        url:"{{route('frontend.posts.comments.store')}}",
-                        type:'Post',
-                        data:formData,
-                        processData:false,
-                        contentType:false,
-                        
-                        success:function(data){
+                        url: "{{ route('frontend.posts.comments.store') }}",
+                        type: 'Post',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+
+                        success: function(data) {
                             $('#commentBox').val(''); // empty comment after stored
                             $('#errormsg').hide(); // to hide error div in case add right comment
                             $('.comments').prepend(` <div class="comment">
@@ -284,15 +289,15 @@
                                 </div>`);
 
                         },
-                        error:function(data){
-                            
-                        var response= $.parseJSON(data.responseText);
-                        $('#errormsg').text(response.errors.comment).show();
+                        error: function(data) {
 
-                    },
+                            var response = $.parseJSON(data.responseText);
+                            $('#errormsg').text(response.errors.comment).show();
+
+                        },
 
                     });
-                    
+
                 });
             </script>
         @endpush

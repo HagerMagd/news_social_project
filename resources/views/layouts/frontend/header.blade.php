@@ -20,7 +20,6 @@
              >logout</a>
             @endauth
             <form id="logoutform" action="{{route('logout')}}" method="POST">@csrf</form>
-            
           </div>
         </div>
       </div>

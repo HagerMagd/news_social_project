@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
@@ -10,6 +11,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+
 
 class RegisterController extends Controller
 {
@@ -60,7 +62,7 @@ class RegisterController extends Controller
             'country' => ['nullable', 'string', 'max:50'],
             'city' => ['nullable', 'string', 'max:50'],
             'street' => ['nullable', 'string', 'max:50'],
-            'image' => ['nullable'],
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
     }
 
@@ -72,7 +74,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user= User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'user_name' => $data['user_name'],
@@ -84,6 +86,20 @@ class RegisterController extends Controller
             
             'password' => Hash::make($data['password']),
         ]);
+
+        if($data['image']){
+            $file=$data['image'];
+            // make name for this image (Not to be repeated)
+            $filename=Str::slug($user->user_name).time().$file->getClientoriginalExtension();
+            // store image in local storge (my disk)
+            $path=$file->storeAs('uploads/users',$filename,['disk'=>'uploads']);
+            //store image in database
+            $user->update([
+                'image'=>$path,
+            ]);
+        }
+
+        return $user;
        
     }
     public function register(Request $request)

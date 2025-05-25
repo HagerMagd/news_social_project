@@ -40,7 +40,7 @@ class LoginController extends Controller
     }
     protected function loggedOut(Request $request)
     {
-       // Session::flash();
+    
         return redirect()->route('frontend.index')->with('success','you are log out , see you soon !');
     }
 }
