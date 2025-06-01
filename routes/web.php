@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\frontend\CategoryController;
-use App\Http\Controllers\frontend\ContactController;
-use App\Http\Controllers\frontend\HomeController;
-use App\Http\Controllers\frontend\NewsSubscribController;
-use App\Http\Controllers\frontend\SearchController;
-use App\Http\Controllers\frontend\ShowPostsController as FrontendShowPostsController;
-use App\Http\Controllers\ShowPostsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ShowPostsController;
+use App\Http\Controllers\frontend\HomeController;
+use App\Http\Controllers\frontend\SearchController;
+use App\Http\Controllers\frontend\ContactController;
+use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\frontend\CategoryController;
+use App\Http\Controllers\frontend\NewsSubscribController;
+use App\Http\Controllers\frontend\ShowPostsController as FrontendShowPostsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +22,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
+Route::redirect('/','/home');
 Route::group([
 'as'=>'frontend.',] ,function(){
-    Route::get('/',[HomeController::class,'index'])->name('index');
+    Route::get('/home',[HomeController::class,'index'])->name('index');
     Route::post('new-subscribe',[NewsSubscribController::class,'store'])->name('new.subscribe');
     Route::get('category/{slug}',CategoryController::class)->name('category.posts');
 
@@ -46,7 +47,13 @@ Route::group([
    
 });
 
+// for Verify Email Address
+Route::prefix('email')->controller(VerificationController::class,)->name('verification.')->group(function(){
+Route::get('/verify', 'show')->name('notice');
+Route::get('/verify/{id}/{hash}','verify')->name('verify');
+Route::post('/resend','resend')->name('resend');
+});
+
 
 Auth::routes();
   
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
