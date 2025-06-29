@@ -1,9 +1,13 @@
 @extends('layouts.frontend.app')
+@section('title')
+
+Contact
+@endsection
 @section('body')
     <!-- Breadcrumb Start -->
     @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active">Conatact</li>
+    <li class="breadcrumb-item active">Contact</li>
 @endsection
     <!-- Contact Start -->
     <div class="row align-items-center">

@@ -8,6 +8,7 @@ use App\Http\Controllers\frontend\SearchController;
 use App\Http\Controllers\frontend\ContactController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\frontend\CategoryController;
+use App\Http\Controllers\frontend\dashboard\ProfileController;
 use App\Http\Controllers\frontend\NewsSubscribController;
 use App\Http\Controllers\frontend\ShowPostsController as FrontendShowPostsController;
 
@@ -44,6 +45,13 @@ Route::group([
 
     // for search request
     Route::match(['post','get'],'search',SearchController::class)->name('search');
+    //user dashboard
+    Route::prefix('account/')->name('dashboard.')->middleware(['auth:web','verified'])->group(function(){
+        Route::controller(ProfileController::class)->group(function(){
+            Route::get('profile','index')->name('profile');
+            Route::post('post/store','storepost')->name('store.post');
+        });
+    });
    
 });
 
@@ -55,5 +63,8 @@ Route::post('/resend','resend')->name('resend');
 });
 
 
+
 Auth::routes();
+
+
   

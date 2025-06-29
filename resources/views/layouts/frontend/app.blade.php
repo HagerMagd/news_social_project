@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Bootstrap News Template - Free HTML Templates</title>
+    <title>
+      
+         {{config('app.name')}} | @yield('title')
+    </title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta
       content="Bootstrap News Template - Free HTML Templates"
@@ -39,6 +42,8 @@
 
     <!-- Template Stylesheet -->
     <link href="{{asset('assets/frontend/css/style.css')}}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{asset('assets/vendor/file-input/css/fileinput-rtl.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/vendor/summernote/summernote-bs4.min.css')}}">
   </head>
 
   <body>
@@ -71,5 +76,10 @@
     <!-- Template Javascript -->
     <script src="{{asset('assets/frontend/js/main.js')}}"></script>
     @stack('js')
+    {{-- file input --}}
+    <script src="{{asset('assets/vendor/file-input/js/fileinput.min.js')}}"></script>
+    <script src="{{asset('assets/vendor/file-input/themes/fa5/theme.min.js')}}"></script>
+    {{-- summer note --}}
+    <script src="{{asset('assets/vendor/summernote/summernote-bs4.min.js')}}"></script>
   </body>
 </html>

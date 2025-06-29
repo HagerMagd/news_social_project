@@ -1,5 +1,9 @@
 @extends('layouts.frontend.app')
+
 @section('body')
+@section('title')
+  Search 
+@endsection
 <!-- Main News Start-->
     <div class="main-news">
       <div class="container">

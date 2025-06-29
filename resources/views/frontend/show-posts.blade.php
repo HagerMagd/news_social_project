@@ -1,4 +1,7 @@
 @extends('layouts.frontend.app')
+@section('title')
+    {{ $mainpost->title }}
+@endsection
 @section('breadcrumb')
     @parent
     <li class="breadcrumb-item active">{{ $mainpost->title }}</li>
@@ -20,12 +23,12 @@
                             @foreach ($mainpost->images as $image)
                                 {{-- To make the first image appear in slide and the other one after it --}}
                                 <div class="carousel-item @if ($loop->index == 0) active @endif">
-                                    <img src="{{ $image->path }}" class="d-block w-100" alt="{{ $mainpost->title }}"
+                                    <img src="{{ asset($image->path) }}" class="d-block w-100" alt="{{ $mainpost->title }}"
                                         title="{{ $mainpost->title }}">
                                     <div class="carousel-caption d-none d-md-block">
                                         <h5 title="{{ $mainpost->title }}">{{ $mainpost->title }}</h5>
                                         <p>
-                                            {{ substr($mainpost->desc, 0, 80) }}
+                                            {!! substr($mainpost->desc, 0, 40) !!}
                                         </p>
                                     </div>
                                 </div>
@@ -45,7 +48,7 @@
 
                     <div class="sn-content">
                         {{-- post content --}}
-                        {{ $mainpost->desc }}
+                        {!! $mainpost->desc !!}
                     </div>
                     <!-- Comment Section -->
                     <div class="comment-section">
@@ -69,7 +72,8 @@
                         <div class="comments">
                             @foreach ($mainpost->comments as $comment)
                                 <div class="comment">
-                                    <img src="{{ $comment->user->image }}"alt="User Image" class="comment-img" title="{{ $comment->user->image}}" />
+                                    <img src="{{ $comment->user->image }}"alt="User Image" class="comment-img"
+                                        title="{{ $comment->user->image }}" />
                                     <div class="comment-content">
                                         <span class="username">{{ $comment->user->name }}</span>
                                         <p class="comment-text">{{ $comment->comment }}</p>
@@ -93,8 +97,12 @@
                             @foreach ($belongs_posts as $post)
                                 <div class="col-md-4">
                                     <div class="sn-img">
-                                        <img src="{{ $post->images->first()->path }}" class="img-fluid"
-                                            alt="{{ $post->title }}" />
+                                        @if ($post->images->first())
+                                            <img src="{{ $post->images->first()->path }}" />
+                                        @else
+                                            <img src="{{ asset('images/post.jpg') }}" />
+                                        @endif
+                                        alt="{{ $post->title }}" />
                                         <div class="sn-title">
                                             <a href="{{ route('frontend.show.posts', $post->slug) }}"
                                                 title="{{ $post->title }}">{{ $post->title }}</a>
@@ -116,7 +124,11 @@
                                 @foreach ($belongs_posts as $post)
                                     <div class="nl-item">
                                         <div class="nl-img">
-                                            <img src="{{ $post->images->first()->path }}" />
+                                            @if ($post->images->first())
+                                                <img src="{{ $post->images->first()->path }}" />
+                                            @else
+                                                <img src="{{ asset('images/post.jpg') }}" />
+                                            @endif
                                         </div>
                                         <div class="nl-title">
                                             <a href="{{ route('frontend.show.posts', $post->slug) }}"

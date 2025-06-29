@@ -1,4 +1,7 @@
 @extends('layouts.frontend.app')
+@section('title')
+  Home
+@endsection
 @section('body')
  @php
    $latest_three_posts=$posts->take(3);
@@ -18,7 +21,11 @@
              @foreach ( $latest_three_posts as $post)
              <div class="col-md-6">
               <div class="tn-img">
+                @if($post->images->first())
                 <img src="{{$post->images->first()->path}}" />
+                @else
+                <img src="{{asset('images/post.jpg')}}" />
+                @endif
                 <div class="tn-title">
                   <a href="{{route('frontend.show.posts',$post->slug)}}">{{ $post->title}}</a>
                 </div>
@@ -36,7 +43,11 @@
               @foreach ( $four_posts as $post)
               <div class="col-md-6">
                 <div class="tn-img">
-                  <img src="{{$post->images->first()->path}}" />
+                 @if($post->images->first())
+                <img src="{{$post->images->first()->path}}" />
+                @else
+                <img src="{{asset('images/post.jpg')}}" />
+                @endif
                   <div class="tn-title">
                     <a href="{{route('frontend.show.posts',$post->slug)}}">{{ $post->title}}</a>
                   </div>
@@ -62,7 +73,11 @@
            @foreach ($category->posts as $post)
            <div class="col-md-6">
             <div class="cn-img">
-              <img src="{{$post->images->first()->path}}" />
+                @if($post->images->first())
+                <img src="{{$post->images->first()->path}}" />
+                @else
+                <img src="{{asset('images/post.jpg')}}" />
+                @endif
               <div class="cn-title">
                 <a href="{{route('frontend.show.posts',$post->slug)}}">{{$post->title}}</a>
               </div>
@@ -151,9 +166,13 @@
               {{-- content latest news --}}
               <div id="m-viewed" class="container tab-pane active">
                 @foreach ($latest_three_posts as $post)
-                  <div class="tn-news"> <!-- ✅ كل بوست في div مستقل -->
+                  <div class="tn-news"> 
                     <div class="tn-img">
-                      <img src="{{$post->images->first()->path }}" />
+                      @if($post->images->first())
+                <img src="{{$post->images->first()->path}}" />
+                @else
+                <img src="{{asset('images/post.jpg')}}" />
+                @endif
                     </div>
                     <div class="tn-title">
                       <a href="{{route('frontend.show.posts',$post->slug)}}">{{$post->title}}</a>
@@ -166,7 +185,11 @@
                 @foreach ($gretest_posts_views as $post)
                 <div class="tn-news">
                   <div class="tn-img">
-                    <img src="{{$post->images->first()->path }}" />
+                      @if($post->images->first())
+                <img src="{{$post->images->first()->path}}" />
+                @else
+                <img src="{{asset('images/post.jpg')}}" />
+                @endif
                   </div>
                   <div class="tn-title">
                     <a href="{{route('frontend.show.posts',$post->slug)}}">{{$post->title}} ({{$post->num_of_views}})</a>
@@ -192,7 +215,11 @@
              @foreach ($posts as $post )
              <div class="col-md-4">
               <div class="mn-img">
-                <img src=" {{$post->images->first()->path}} " />
+                @if($post->images->first())
+                <img src="{{$post->images->first()->path}}" />
+                @else
+                <img src="{{asset('images/post.jpg')}}" />
+                @endif
                 <div class="mn-title">
                   <a href="{{route('frontend.show.posts',$post->slug)}}"> {{$post->title}} </a>
                 </div>
