@@ -20,6 +20,7 @@ class ShowPostsController extends Controller
             ->select('id', 'slug', 'title')
             ->limit(6)
             ->get();
+            $mainpost->increment('num_of_views'); //To increase the number of views
         
         return view("frontend.show-posts", compact('mainpost', 'belongs_posts'));
     }

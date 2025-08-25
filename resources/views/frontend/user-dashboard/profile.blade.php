@@ -20,7 +20,7 @@
 
             <!-- Sidebar Menu -->
             <div class="list-group profile-sidebar-menu">
-                <a href="./dashboard.html" class="list-group-item list-group-item-action active menu-item"
+                <a href="{{route('frontend.dashboard.profile')}}" class="list-group-item list-group-item-action active menu-item"
                     data-section="profile">
                     <i class="fas fa-user"></i> Profile
                 </a>
@@ -28,7 +28,7 @@
                     data-section="notifications">
                     <i class="fas fa-bell"></i> Notifications
                 </a>
-                <a href="./setting.html" class="list-group-item list-group-item-action menu-item" data-section="settings">
+                <a href="{{route('frontend.dashboard.setting')}}" class="list-group-item list-group-item-action menu-item" data-section="settings">
                     <i class="fas fa-cog"></i> Settings
                 </a>
             </div>
@@ -49,9 +49,9 @@
                 <!-- Add Post Section -->
                 @if (session()->has('errors'))
                     <div class="alert alert-warning" role="alert">
-                          @foreach (session('errors')->all() as $error)
-                          <li>{{$error}}</li>
-                           @endforeach
+                        @foreach (session('errors')->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
                     </div>
                 @endif
                 <form action="{{ route('frontend.dashboard.store.post') }}" method="POST" enctype="multipart/form-data">
@@ -93,95 +93,104 @@
                 </form>
             </section>
 
-            <!-- Posts Section -->
+            <!-- show posts -->
             <section id="posts" class="posts-section">
                 <h2>Recent Posts</h2>
                 <div class="post-list">
                     <!-- Post Item -->
-                    <div class="post-item mb-4 p-3 border rounded">
-                        <div class="post-header d-flex align-items-center mb-2">
-                            <img src="{{ asset(Auth::guard('web')->user()->image) }}" alt="User Image"
-                                class="rounded-circle" style="width: 50px; height: 50px;" />
-                            <div class="ms-3">
-                                <h5 class="mb-0">{{ Auth::guard('web')->user()->name }}</h5>
-                                <small class="text-muted">2 hours ago</small>
-                            </div>
-                        </div>
-                        <h4 class="post-title">Post Title Here</h4>
-                        <p class="post-content">This is an example post content. The user can share their thoughts,
-                            upload images, and more.</p>
-
-                        <div id="newsCarousel" class="carousel slide" data-ride="carousel">
-                            <ol class="carousel-indicators">
-                                <li data-target="#newsCarousel" data-slide-to="0" class="active"></li>
-                                <li data-target="#newsCarousel" data-slide-to="1"></li>
-                                <li data-target="#newsCarousel" data-slide-to="2"></li>
-                            </ol>
-                            <div class="carousel-inner">
-                                <div class="carousel-item  active">
-                                    <img src="{{ asset('user.jpeg') }}" class="d-block w-100" alt="First Slide">
-                                    <div class="carousel-caption d-none d-md-block">
-                                        <h5>dsfdk</h5>
-                                        <p>
-                                            oookok
-                                        </p>
-                                    </div>
+                    @forelse ($posts as $post)
+                        <div class="post-item mb-4 p-3 border rounded">
+                            <div class="post-header d-flex align-items-center mb-2">
+                                <img src="{{ asset(Auth::guard('web')->user()->image) }}" alt="User Image"
+                                    class="rounded-circle" style="width: 50px; height: 50px;" />
+                                <div class="ms-3">
+                                    <h5 class="mb-0">{{ Auth::guard('web')->user()->name }}</h5>
                                 </div>
-                                <div class="carousel-item ">
-                                    <img src="" class="d-block w-100" alt="First Slide">
-                                    <div class="carousel-caption d-none d-md-block">
-                                        <h5>dsfdk</h5>
-                                        <p>
-                                            oookok
-                                        </p>
-                                    </div>
+                            </div>
+                            <h4 class="post-title">{{ $post->title }}</h4>
+                            <p class="post-content">{!! chunk_split($post->desc, 40) !!}</p>
+
+                            <div id="newsCarousel" class="carousel slide" data-ride="carousel">
+                                <ol class="carousel-indicators">
+                                    <li data-target="#newsCarousel" data-slide-to="0" class="active"></li>
+                                    <li data-target="#newsCarousel" data-slide-to="1"></li>
+                                    <li data-target="#newsCarousel" data-slide-to="2"></li>
+                                </ol>
+                                <div class="carousel-inner">
+                                    @foreach ($post->images as $image)
+                                        <div class="carousel-item @if ($loop->index == 0) active @endif ">
+                                            <img src="{{ asset($image->path) }}" class="d-block w-100" alt="First Slide">
+                                            <div class="carousel-caption d-none d-md-block">
+                                                <h5>{{ $post->title }}</h5>
+
+                                            </div>
+                                        </div>
+                                    @endforeach
+
+
+
+                                    <!-- Add more carousel-item blocks for additional slides -->
                                 </div>
-
-                                <!-- Add more carousel-item blocks for additional slides -->
-                            </div>
-                            <a class="carousel-control-prev" href="#newsCarousel" role="button" data-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="carousel-control-next" href="#newsCarousel" role="button" data-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </div>
-
-                        <div class="post-actions d-flex justify-content-between">
-                            <div class="post-stats">
-                                <!-- View Count -->
-                                <span class="me-3">
-                                    <i class="fas fa-eye"></i> 123 views
-                                </span>
-                            </div>
-
-                            <div>
-                                <a href="" class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-edit"></i> Edit
+                                <a class="carousel-control-prev" href="#newsCarousel" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
                                 </a>
-                                <a href="" class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-thumbs-up"></i> Delete
+                                <a class="carousel-control-next" href="#newsCarousel" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
                                 </a>
-                                <button class="btn btn-sm btn-outline-secondary">
-                                    <i class="fas fa-comment"></i> Comments
-                                </button>
                             </div>
-                        </div>
 
-                        <!-- Display Comments -->
-                        <div class="comments">
-                            <div class="comment">
-                                <img src="{{ asset('user.jpeg') }}" alt="User Image" class="comment-img" />
-                                <div class="comment-content">
-                                    <span class="username"></span>
-                                    <p class="comment-text">first comment</p>
+                            <div class="post-actions d-flex justify-content-between">
+                                <div class="post-stats">
+                                    <!-- View Count -->
+                                    <span class="me-3">
+                                        <i class="fas fa-eye"></i> {{ $post->num_of_views }}
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <a href="{{ route('frontend.dashboard.formeditpost',$post->slug)}}"
+                                        class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <a href="javascript:void(0)"
+                                        onclick="if(confirm('ARE U SURE TO DELET THIS POST ?')) 
+                                    { document.getElementById('deleteform_{{ $post->id }}').submit()} return false"
+                                        class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-thumbs-up"></i> Delete
+                                    </a>
+                                    <button id ="commentbtn_{{ $post->id }}"class="getcomment"
+                                        post_id={{ $post->id }} btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-comment"></i> Comments
+                                    </button>
+                                    <button style="display: none"
+                                        id ="hidecommentbtn_{{ $post->id }}"class="hidecomment"
+                                        post_id={{ $post->id }} btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-comment"></i>Hide Comments
+                                    </button>
+                                    <form action="{{ route('frontend.dashboard.delete.post') }}"
+                                        id="deleteform_{{ $post->id }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input name="slug" value="{{ $post->slug }}" hidden>
+
+                                    </form>
                                 </div>
                             </div>
-                            <!-- Add more comments here for demonstration -->
+
+                            <!-- Display Comments -->
+                            <div id="displaycomments_{{ $post->id }}" class="comments" style="display: none">
+
+                                <!-- Add more comments here for demonstration -->
+                            </div>
                         </div>
-                    </div>
+                    @empty
+                        <div class="alert alert-dark" role="alert">
+                            no posts yet
+                        </div>
+                    @endforelse
+
 
                     <!-- Add more posts here dynamically -->
                 </div>
@@ -199,6 +208,10 @@
             $('#postImage').fileinput({
                 theme: 'fa5',
                 allowedFileTypes: ['image'],
+                showUpload: false,
+                enableResumebleUpload: false,
+                maxFileCount: 5,
+                shwoCancel: false
             });
 
             // for summernote
@@ -208,5 +221,50 @@
                 height: 300,
             });
         });
+        //get post comments
+        $(document).on('click', '.getcomment', function(e) {
+            e.preventDefault();
+            var post_id = $(this).attr('post_id');
+            $.ajax({
+                url: '{{ route('frontend.dashboard.getcomments', ':post_id') }}'.replace(':post_id',
+                    post_id),
+                type: 'GET',
+                success: function(response) {
+                    $('#displaycomments_' + post_id).empty();
+                    $.each(response.data, function(indexInArray, comment) {
+                        $('#displaycomments_' + post_id).append(` <div class="comment">
+                                    <img src="{{ asset('') }}${comment.user.image}" alt="User Image" class="comment-img" />
+                                    <div class="comment-content">
+                                        <span class="username">${comment.user.name}</span>
+                                        <p class="comment-text">${comment.comment}</p>
+                                    </div>
+                                </div>`).show();
+                    });
+                    $('#commentbtn_' + post_id).hide();
+                    $('#hidecommentbtn_' + post_id).show();
+
+                }
+
+            });
+        });
+        //hide post comments
+        $(document).on('click', '.hidecomment', function(e) {
+            e.preventDefault();
+            var post_id = $(this).attr('post_id');
+            //hide comments
+            $('#displaycomments_' + post_id).hide();
+            //hide (hide comments btn)
+            $('#hidecommentbtn_' + post_id).hide();
+            //apper comment btn
+            $('#commentbtn_' + post_id).show();
+
+
+
+
+
+
+
+        });
+        //hide comments
     </script>
 @endpush

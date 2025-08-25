@@ -28,7 +28,6 @@
                                     <div class="carousel-caption d-none d-md-block">
                                         <h5 title="{{ $mainpost->title }}">{{ $mainpost->title }}</h5>
                                         <p>
-                                            {!! substr($mainpost->desc, 0, 40) !!}
                                         </p>
                                     </div>
                                 </div>
@@ -53,26 +52,32 @@
                     <!-- Comment Section -->
                     <div class="comment-section">
                         <!-- Comment Input -->
-                        @auth
-                            <form id="commentform">
-                                @csrf
-                                <div class="comment-input">
-                                    <input name="comment" type="text" placeholder="Add a comment..." id="commentBox" />
-                                    <input type="hidden" name="users_id" value="{{ auth()->user()->id }}">
-                                    <input type="hidden" name="post_id" value="{{ $mainpost->id }}">
-                                    <button id="addCommentBtn" type="submit">Add Comment</button>
-                                </div>
-                            </form>
+                        @if ($mainpost->comment_able == 1)
+                            @auth
+                                <form id="commentform">
+                                    @csrf
+                                    <div class="comment-input">
+                                        <input name="comment" type="text" placeholder="Add a comment..." id="commentBox" />
+                                        <input type="hidden" name="users_id" value="{{ auth()->user()->id }}">
+                                        <input type="hidden" name="post_id" value="{{ $mainpost->id }}">
+                                        <button id="addCommentBtn" type="submit">Add Comment</button>
+                                    </div>
+                                </form>
+                            @else
+                                <div class="alert alert-info">You must be logged in to post a comment.</div>
+                            @endauth
                         @else
-                            <div class="alert alert-info">You must be logged in to post a comment.</div>
-                        @endauth
+                            <div class="alert alert-info">
+                                unable to comment
+                            </div>
+                        @endif
 
                         <div id="errormsg" class="alert alert-danger" style="display: none"></div>
                         <!-- Display Comments -->
                         <div class="comments">
                             @foreach ($mainpost->comments as $comment)
                                 <div class="comment">
-                                    <img src="{{ $comment->user->image }}"alt="User Image" class="comment-img"
+                                    <img src="{{ asset($comment->user->image) }}"alt="User Image" class="comment-img"
                                         title="{{ $comment->user->image }}" />
                                     <div class="comment-content">
                                         <span class="username">{{ $comment->user->name }}</span>
@@ -86,8 +91,11 @@
                         </div>
 
                         <!-- Show More Button -->
-                        <button id="showMoreBtn" class="show-more-btn"
-                            data-url="{{ route('frontend.post.get-all-comments', $mainpost->slug) }}">Show more</button>
+                        @if ($mainpost->comments->count() > 2)
+                            <button id="showMoreBtn" class="show-more-btn"
+                                data-url="{{ route('frontend.post.get-all-comments', $mainpost->slug) }}">Show
+                                more</button>
+                        @endif
                     </div>
 
                     <!-- Related News -->
@@ -98,7 +106,7 @@
                                 <div class="col-md-4">
                                     <div class="sn-img">
                                         @if ($post->images->first())
-                                            <img src="{{ $post->images->first()->path }}" />
+                                            <img src="{{ asset($post->images->first()->path) }}" />
                                         @else
                                             <img src="{{ asset('images/post.jpg') }}" />
                                         @endif
@@ -167,7 +175,7 @@
                                                 <div class="tn-news">
                                                     <div class="tn-img">
                                                         <img
-                                                            src="{{ $post->images()->first()->path }}"alt="{{ $post->title }}" />
+                                                            src="{{ asset('$post->images()->first()->path ') }}"alt="{{ $post->title }}" />
                                                     </div>
                                                     <div class="tn-title">
                                                         <a href="{{ route('frontend.show.posts', $post->slug) }}"
@@ -183,7 +191,7 @@
                                                 <div class="tn-news">
                                                     <div class="tn-img">
                                                         <img
-                                                            src="{{ $post->images()->first()->path }}"alt="{{ $post->title }}" />
+                                                            src="{{ asset($post->images()->first()->path) }}"alt="{{ $post->title }}" />
                                                     </div>
                                                     <div class="tn-title">
                                                         <a href="{{ route('frontend.show.posts', $post->slug) }}"

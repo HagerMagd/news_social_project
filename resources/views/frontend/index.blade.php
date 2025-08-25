@@ -22,9 +22,9 @@
              <div class="col-md-6">
               <div class="tn-img">
                 @if($post->images->first())
-                <img src="{{$post->images->first()->path}}" />
+                <img style="height: 150px; width:240px" src="{{$post->images->first()->path}}" />
                 @else
-                <img src="{{asset('images/post.jpg')}}" />
+                <img  style="height: 150px; width:240px" src="{{asset('images/post.jpg')}}" />
                 @endif
                 <div class="tn-title">
                   <a href="{{route('frontend.show.posts',$post->slug)}}">{{ $post->title}}</a>
@@ -44,9 +44,9 @@
               <div class="col-md-6">
                 <div class="tn-img">
                  @if($post->images->first())
-                <img src="{{$post->images->first()->path}}" />
+                <img  style="height: 150px; width:240px" src="{{$post->images->first()->path}}" />
                 @else
-                <img src="{{asset('images/post.jpg')}}" />
+                <img  style="height: 150px; width:240px" src="{{asset('images/post.jpg')}}" />
                 @endif
                   <div class="tn-title">
                     <a href="{{route('frontend.show.posts',$post->slug)}}">{{ $post->title}}</a>
@@ -74,9 +74,9 @@
            <div class="col-md-6">
             <div class="cn-img">
                 @if($post->images->first())
-                <img src="{{$post->images->first()->path}}" />
+                <img style="height: 150px; width:240px" src="{{$post->images->first()->path}}" />
                 @else
-                <img src="{{asset('images/post.jpg')}}" />
+                <img  style="height: 150px; width:240px"src="{{asset('images/post.jpg')}}" />
                 @endif
               <div class="cn-title">
                 <a href="{{route('frontend.show.posts',$post->slug)}}">{{$post->title}}</a>
@@ -117,7 +117,7 @@
                 @foreach ($oldest_posts as $post)
                 <div class="tn-news">
                   <div class="tn-img">
-                    <img src="{{ $post->images->first()->path }}" />
+                    <img src="{{ asset($post->images->first()->path) }}" />
                   </div>
                   <div class="tn-title">
                     <a href="{{route('frontend.show.posts',$post->slug)}}">{{$post->title}}</a>
@@ -131,7 +131,7 @@
                 @foreach ($popular_posts as $post)
                 <div class="tn-news">
                   <div class="tn-img">
-                    <img src="{{$post->images->first()->path}} />
+                    <img src="{{asset($post->images->first()->path)}} />
                   </div>
                   <div class="tn-title">
                     <a href="{{route('frontend.show.posts',$post->slug)}}">{{$post->title}} comments {{$post->comments_count}}</a>
@@ -169,7 +169,7 @@
                   <div class="tn-news"> 
                     <div class="tn-img">
                       @if($post->images->first())
-                <img src="{{$post->images->first()->path}}" />
+                <img src="{{asset($post->images->first()->path)}}" />
                 @else
                 <img src="{{asset('images/post.jpg')}}" />
                 @endif
@@ -186,7 +186,7 @@
                 <div class="tn-news">
                   <div class="tn-img">
                       @if($post->images->first())
-                <img src="{{$post->images->first()->path}}" />
+                <img src="{{asset($post->images->first()->path)}}" />
                 @else
                 <img src="{{asset('images/post.jpg')}}" />
                 @endif
@@ -216,7 +216,7 @@
              <div class="col-md-4">
               <div class="mn-img">
                 @if($post->images->first())
-                <img src="{{$post->images->first()->path}}" />
+                <img  style="height: 150px; width:240px" src="{{asset($post->images->first()->path)}}" />
                 @else
                 <img src="{{asset('images/post.jpg')}}" />
                 @endif
