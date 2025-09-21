@@ -44,11 +44,14 @@
                             <span class="sr-only">Next</span>
                         </a>
                     </div>
-
+                    
                     <div class="sn-content">
+                         <div class="alert alert-info">{{$mainpost->user->name}} , {{$mainpost->user->id}}</div>
                         {{-- post content --}}
                         {!! $mainpost->desc !!}
                     </div>
+                   
+            
                     <!-- Comment Section -->
                     <div class="comment-section">
                         <!-- Comment Input -->

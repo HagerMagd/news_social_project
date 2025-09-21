@@ -8,10 +8,12 @@ use App\Http\Controllers\frontend\SearchController;
 use App\Http\Controllers\frontend\ContactController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\frontend\CategoryController;
+use App\Http\Controllers\frontend\dashboard\NotificationController;
 use App\Http\Controllers\frontend\dashboard\ProfileController;
 use App\Http\Controllers\frontend\dashboard\SettingController;
 use App\Http\Controllers\frontend\NewsSubscribController;
 use App\Http\Controllers\frontend\ShowPostsController as FrontendShowPostsController;
+use Illuminate\Routing\Route as RoutingRoute;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,8 +68,17 @@ Route::group([
             Route::post('/update', 'updatesetting')->name('updatesetting');
             Route::post('/chang-password', 'changePassword')->name('changepassword');
         });
+
+        //notification 
+        Route::prefix('notification')->controller(NotificationController::class)->group(function () {
+            Route::get('/', 'index')->name('notification.index');
+            Route::get('/read-all', 'readAll')->name('notification.readall');
+            Route::post('/delete', 'delete')->name('notification.delete');
+            Route::get('/deleteall', 'deleteAll')->name('notification.deleteAll');
+        });
     });
 });
+
 
 // for Verify Email Address
 Route::prefix('email')->controller(VerificationController::class,)->name('verification.')->group(function () {

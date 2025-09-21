@@ -6,6 +6,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
+use App\Notifications\NewCommentNotifi;
 
 class ShowPostsController extends Controller
 {
@@ -50,6 +51,9 @@ class ShowPostsController extends Controller
             'post_id' => $request->post_id,
 
         ]);
+
+        $post=Post::findOrFail($request->post_id);
+        $post->user->notify(new NewCommentNotifi($comment,$post));
         // to return relation with users tb to show users names .. in blade page
         $comment->load('user');
 

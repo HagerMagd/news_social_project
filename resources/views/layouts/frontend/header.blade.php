@@ -73,8 +73,8 @@
                           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Categories</a>
                           <div class="dropdown-menu">
                               @foreach ($categories as $category)
-                                  <a href="{{ route('frontend.category.posts', $category->slug) }}" class="dropdown-item"
-                                      title="{{ $category->name }}">{{ $category->name }}</a>
+                                  <a href="{{ route('frontend.category.posts', $category->slug) }}"
+                                      class="dropdown-item" title="{{ $category->name }}">{{ $category->name }}</a>
                               @endforeach
 
 
@@ -87,7 +87,56 @@
                       @endauth
 
                   </div>
+
                   <div class="social ml-auto">
+                      <!-- Notification Dropdown -->
+                      @auth
+                          <a href="#" class="nav-link dropdown-toggle" id="notificationDropdown" role="button"
+                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <i class="fas fa-bell"></i>
+                              <span class="badge badge-danger">
+
+                                  {{ auth()->user()->unreadNotifications->count() }}
+
+                              </span>
+                          </a>
+                      @endauth
+
+
+                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown"
+                          style="width: 300px;">
+                          
+                          <a class="dropdown-header" href="{{ route('frontend.dashboard.notification.readall') }}">Read
+                              all</a>
+
+                          {{-- <span>{{auth()->user()->id}}</span> --}}
+                          {{-- @if (auth()->check()) --}}
+                          @forelse (auth()->user()->unreadNotifications as $notification)
+                              <div class="dropdown-item d-flex justify-content-between align-items-center">
+                                  <span> Post comment: {{ substr($notification->data['post_title'], 0, 9) }}
+                                      ...</span>
+                                  <a href="{{ $notification->data['url'] }}?notify={{ $notification->id }}"><i
+                                          class="fa fa-eye" aria-hidden="true">
+                                      </i> </a>
+
+                              </div>
+
+                          @empty
+                              <div class="dropdown-item text-center">No notifications</div>
+                          @endforelse
+                          {{-- <form action="" method="POST">
+                                          <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                      </form>
+                                  </div> --}}
+
+
+
+
+
+
+                      </div>
+
+
                       <a href="{{ $getsetting->twitter }}" title="twitter"><i class="fab fa-twitter"></i></a>
                       <a href="{{ $getsetting->facebook }}" title="facebook"><i class="fab fa-facebook-f"></i></a>
                       <a href="{{ $getsetting->linkedin }}" title="linkedin"><i class="fab fa-linkedin-in"></i></a>
