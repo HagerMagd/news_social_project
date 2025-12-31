@@ -13,6 +13,9 @@
     />
     
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script>
+    const APP_URL = "{{ url('/') }}";
+</script>
 
     <meta
       content="Bootstrap News Template - Free HTML Templates"
@@ -54,7 +57,7 @@
       <div class="container">
         <ul class="breadcrumb">
           @section('breadcrumb')
-          <li class="breadcrumb-item"><a href="{{route('frontend.index')}}">Home</a></li>
+          {{-- empty --}}
           @show
         </ul>
       </div>
@@ -68,6 +71,14 @@
     <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
 
     <!-- JavaScript Libraries -->
+    @auth
+        <script>
+      id="{{auth()->user()->id}}";
+    </script>
+    @endauth
+    
+    <script src="{{asset('build/assets/app-ZP4soSBk.js')}}">
+    </script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="{{asset('assets/frontend')}}/lib/easing/easing.min.js"></script>

@@ -6,7 +6,9 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
+use App\Models\User;
 use App\Notifications\NewCommentNotifi;
+use Illuminate\Support\Facades\Notification;
 
 class ShowPostsController extends Controller
 {
@@ -21,8 +23,8 @@ class ShowPostsController extends Controller
             ->select('id', 'slug', 'title')
             ->limit(6)
             ->get();
-            $mainpost->increment('num_of_views'); //To increase the number of views
-        
+        $mainpost->increment('num_of_views'); //To increase the number of views
+
         return view("frontend.show-posts", compact('mainpost', 'belongs_posts'));
     }
 
@@ -52,8 +54,19 @@ class ShowPostsController extends Controller
 
         ]);
 
-        $post=Post::findOrFail($request->post_id);
-        $post->user->notify(new NewCommentNotifi($comment,$post));
+
+        //send notifications to specific users
+        // $users=User::where('id','!=',$request->users_id);
+        // Notification::send($users,new NewCommentNotifi($comment,$post));
+
+
+        //send notification if some one post a comment in user post
+        $post = Post::findOrFail($request->post_id);
+        if (auth()->user()->id != $post->user_id) {
+            $post->user->notify(new NewCommentNotifi($comment, $post));
+        }
+
+
         // to return relation with users tb to show users names .. in blade page
         $comment->load('user');
 

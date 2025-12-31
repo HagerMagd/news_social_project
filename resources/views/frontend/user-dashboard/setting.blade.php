@@ -9,28 +9,7 @@
     <div class="container mt-4">
         <div class="row">
 
-            <!-- Sidebar -->
-            <aside class="col-md-3">
-                <div class="user-info text-center p-3 border rounded">
-                    <img src="{{ asset($user->image) }}" alt="User Image" class="rounded-circle mb-2"
-                        style="width: 80px; height: 80px; object-fit: cover" />
-                    <h5 class="mb-0" style="color: #ff6f61"> {{ $user->name }}</h5>
-                </div>
-
-                <div class="list-group mt-3">
-                    <a href="{{ route('frontend.dashboard.profile') }}" class="list-group-item list-group-item-action">
-                        <i class="fas fa-user"></i> Profile
-                    </a>
-                    <a href="{{ route('frontend.dashboard.notification.index') }}"
-                        class="list-group-item list-group-item-action menu-item" data-section="notifications">
-                        <i class="fas fa-bell"></i> Notifications
-                    </a>
-                    <a href="{{ route('frontend.dashboard.setting') }}"
-                        class="list-group-item list-group-item-action active" >
-                        <i class="fas fa-cog"></i> Settings
-                    </a>
-                </div>
-            </aside>
+             @include('frontend.user-dashboard._slidbar',['setting_active'=>'active'])
 
             <!-- Main Content -->
             <div class="col-md-9">

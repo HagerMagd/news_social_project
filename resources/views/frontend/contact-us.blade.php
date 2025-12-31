@@ -6,7 +6,7 @@ Contact
 @section('body')
     <!-- Breadcrumb Start -->
     @section('breadcrumb')
-    @parent
+    <li class="breadcrumb-item"><a href="{{route('frontend.index')}}">Home</a></li>
     <li class="breadcrumb-item active">Contact</li>
 @endsection
     <!-- Contact Start -->

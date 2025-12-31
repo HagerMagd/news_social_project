@@ -3,7 +3,7 @@
     {{ $mainpost->title }}
 @endsection
 @section('breadcrumb')
-    @parent
+   <li class="breadcrumb-item"><a href="{{route('frontend.index')}}">Home</a></li>
     <li class="breadcrumb-item active">{{ $mainpost->title }}</li>
 @endsection
 @section('body')
@@ -46,7 +46,7 @@
                     </div>
                     
                     <div class="sn-content">
-                         <div class="alert alert-info">{{$mainpost->user->name}} , {{$mainpost->user->id}}</div>
+                         <div class="alert alert-info"> Publisher : {{$mainpost->user->name}} </div>
                         {{-- post content --}}
                         {!! $mainpost->desc !!}
                     </div>

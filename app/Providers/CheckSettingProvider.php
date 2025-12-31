@@ -39,7 +39,8 @@ class CheckSettingProvider extends ServiceProvider
             ]);
         });
 
-      
+      $getsetting -> whatsapp ='https://wa.me/'.$getsetting->phone;
+    
 
         view()->share([
             'getsetting'=> $getsetting,

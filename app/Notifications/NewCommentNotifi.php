@@ -29,7 +29,7 @@ class NewCommentNotifi extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['database','Broadcast'];
     }
 
     /**
@@ -60,4 +60,22 @@ class NewCommentNotifi extends Notification
 
         ];
     }
+    public function toBroadcast(object $notifiable): array
+    {
+        return [
+            'users_id'=>$this->comment->users_id,
+            'user_name'=>auth()->user()->name,
+            'post_title'=>$this->post->title,
+             "comment"=>$this->comment->comment,
+             'url'=>route('frontend.show.posts',$this->post->slug),
+
+
+        ];
+    }
+
+    //Get the type of the notification being broadcast.
+    public function broadcastType(): string
+{
+    return 'NewCommentNotifi';
+}
 }
