@@ -31,7 +31,7 @@ class AdminLoginController extends Controller
         {
             return redirect()->intended(RouteServiceProvider::AdminHome);
         }
-        return redirect()->back()->with('error','this email Not available');
+        return redirect()->back()->with('error','Try again');
     }
     private function FilterData() :array
     {

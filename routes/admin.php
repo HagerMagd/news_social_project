@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\Auth\AdminLoginController;
 use App\Http\Controllers\Admin\Auth\Passwords\ForgetPassword;
 use App\Http\Controllers\Admin\Auth\Passwords\ResetPassword;
 use App\Http\Controllers\Admin\Auth\User\UsersController;
+use App\Http\Controllers\Admin\Category\CategoryController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Auth;
@@ -46,7 +47,10 @@ Route::group(['prefix' => 'admin/', 'as' => 'admin.'], function () {
 
 Route::group(['prefix' => 'admin/', 'as' => 'admin.', 'middleware' => 'auth:admin'], function () {
     Route::resource('users', UsersController::class);
+    Route::resource('category', CategoryController::class);
+
     Route::get("users/Status/{id}", [UsersController::class, 'UserStatus'])->name("user.status");
+    Route::get("categories/Status/{id}", [CategoryController::class, 'CategoriesStatus'])->name("Categories.Status");
     Route::get('home', function () {
         return view('dashbord.index');
     })->name('home');

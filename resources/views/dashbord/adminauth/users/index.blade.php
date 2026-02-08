@@ -51,24 +51,25 @@
                                     <td>{{ $user->status == 0 ? 'Not Active' : 'Active' }}</td>
                                     <td>{{ $user->created_at }}</td>
                                     <td>
-                                        <a href="javascript:void(0)" onclick="if(confirm('Do You Want Delete {{$user->name}}?'))
-                                        {document.getElementById('Delete_user_{{$user->id}}').submit()} return false">
-                                            <li class="fa fa-trash" title="delete {{$user->id}}"></li>
+                                        <a href="javascript:void(0)"
+                                            onclick="if(confirm('Do You Want Delete {{ $user->name }}?'))
+                                        {document.getElementById('Delete_user_{{ $user->id }}').submit()} return false">
+                                            <li class="fa fa-trash" title="delete {{ $user->id }}"></li>
                                         </a>
-                                        <a href="{{route('admin.user.status',$user->id)}}">
-                                            <li class="fa @if ($user->status==1)  fa-ban @else fa-unlock @endif 
-                                                @if ($user->status==1)
-                                                     " title="block user {{$user->id}}"
+                                        <a href="{{ route('admin.user.status', $user->id) }}">
+                                            <li
+                                                class="fa @if ($user->status == 1) fa-ban @else fa-unlock @endif 
+                                                @if ($user->status == 1) " title="block user {{ $user->id }}"
                                                 @else
-                                                      " title="Unblock user {{$user->id}}"
-                                                @endif></li>
+                                                      " title="Unblock user {{ $user->id }}" @endif></li>
                                         </a>
-                                        <a href="#">
+                                        <a href="{{ route('admin.users.show', $user->id) }}">
                                             <li class="fa fa-eye"title="show details "></li>
                                         </a>
                                     </td>
                                 </tr>
-                                <form id="Delete_user_{{$user->id}}" action="{{ route('admin.users.destroy',$user->id) }}" method="post">
+                                <form id="Delete_user_{{ $user->id }}"
+                                    action="{{ route('admin.users.destroy', $user->id) }}" method="post">
                                     @csrf
                                     @method('DELETE')
                                 </form>

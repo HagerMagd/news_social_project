@@ -69,7 +69,8 @@ class UsersController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user=User::findOrFail($id);
+        return view('dashbord.adminauth.users.show', compact('user'));
     }
 
     /**
@@ -98,7 +99,7 @@ class UsersController extends Controller
         ImagesManger::checkFileAndDelete($user->image);
         $user->delete();
         Session::flash('success', "$user->name Deleted Successuflly");
-        return redirect()->back();
+        return redirect()->route('admin.users.index');
     }
     public function UserStatus($id)
     {
