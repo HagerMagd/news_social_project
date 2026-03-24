@@ -46,7 +46,7 @@
                     </div>
                     
                     <div class="sn-content">
-                         <div class="alert alert-info"> Publisher : {{$mainpost->user->name}} </div>
+                         <div class="alert alert-info"> Publisher : {{$mainpost->user->name ?? $mainpost->admin->name}} </div>
                         {{-- post content --}}
                         {!! $mainpost->desc !!}
                     </div>

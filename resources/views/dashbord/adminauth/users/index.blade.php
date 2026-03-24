@@ -23,6 +23,7 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
+                                <th>#</th>
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Country</th>
@@ -33,6 +34,7 @@
                         </thead>
                         <tfoot>
                             <tr>
+                                <th>#</th>
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Country</th>
@@ -44,7 +46,7 @@
                         <tbody>
                             @forelse ($users as $user)
                                 <tr>
-
+                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td> {{ $user->email }}</td>
                                     <td>{{ $user->country }}</td>

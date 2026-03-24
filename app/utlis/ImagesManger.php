@@ -45,12 +45,12 @@ class ImagesManger
             }
         }
     }
-    private static function generateImageName($image)
+    public static function generateImageName($image)
     {
         $image_name = Str::uuid() . time() . $image->getClientoriginalExtension();
         return $image_name;
     }
-    private static function storeImageInLocal($image,$path,$image_name)
+    public static function storeImageInLocal($image,$path,$image_name)
     {
         $path = $image->storeAs('uploads/'.$path, $image_name, ['disk' => 'uploads']);
         return $path;

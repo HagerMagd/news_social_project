@@ -19,9 +19,10 @@ return new class extends Migration
             $table->boolean('comment_able')->default(1);
             $table->bigInteger('num_of_views')->default(0);
             $table->boolean('status')->default(1);
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');//اول طريقة
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
+            $table->foreignId('admin_id')->nullable()->constrained('admins')->onDelete('cascade');
             $table->foreignId('category_id')->references('id')->on
-            ('categories')->onDelete('cascade'); //تاني طريقة
+            ('categories')->onDelete('cascade'); 
             $table->timestamps();
         });
     }

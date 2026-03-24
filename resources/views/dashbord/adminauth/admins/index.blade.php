@@ -1,6 +1,6 @@
 @extends('layouts.dashbord.app')
 @section('title')
-    categories Mangement
+    Admins Mangement
 @endsection
 @section('body')
     <!-- Begin Page Content -->
@@ -23,10 +23,10 @@
 
                         <!-- Header -->
                         <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Post Categories</h5>
+                            <h5 class="mb-0">ADMINS</h5>
 
-                            <a class="btn btn-primary btn-sm" a href="{{ route('admin.category.create') }}">
-                                + Add New Category
+                            <a class="btn btn-primary btn-sm" a href="{{ route('admin.admin.create') }}">
+                                + Add New Admin
                             </a>
                         </div>
 
@@ -34,7 +34,7 @@
                         <div class="card-body">
 
                             <!-- Search & Filter -->
-                            @include('dashbord.adminauth.category.categoryfilter.filter')
+                            @include('dashbord.adminauth.admins.filter.filter')
 
                             <!-- Table -->
                             <div class="table-responsive">
@@ -43,11 +43,12 @@
 
                                     <thead class="table-light">
                                         <tr>
+
                                             <th>#</th>
                                             <th>Name</th>
-                                            <th>Slug</th>
+                                            <th>username</th>
+                                            <th>Email</th>
                                             <th>Status</th>
-                                            <th>Post Count</th>
                                             <th>Created At</th>
                                             <th>Actions</th>
                                         </tr>
@@ -56,9 +57,9 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Name</th>
-                                            <th>Slug</th>
+                                            <th>username</th>
+                                            <th>Email</th>
                                             <th>Status</th>
-                                            <th>Post Count</th>
                                             <th>Created At</th>
                                             <th>Actions</th>
                                         </tr>
@@ -67,53 +68,52 @@
                                     <tbody>
 
 
-                                        @forelse ($categories as $category)
+                                        @forelse ($admins as $admin)
                                             <tr>
 
                                                 <td>{{ $loop->iteration }}</td>
 
-                                                <td>{{ $category->name }}</td>
+                                                <td>{{ $admin->name }}</td>
 
-                                                <td>{{ $category->slug }}</td>
+                                                <td>{{ $admin->user_name }}</td>
+                                                <td>{{ $admin->email }}</td>
 
                                                 <!-- Status Badge -->
                                                 <td>
                                                     <span
-                                                        class="badge {{ $category->status == 1 ? 'bg-success' : 'bg-danger' }}">
-                                                        {{ $category->status == 1 ? 'Active' : 'Not Active' }}
+                                                        class="badge {{ $admin->status == 1 ? 'bg-success' : 'bg-danger' }}">
+                                                        {{ $admin->status == 1 ? 'Active' : 'Not Active' }}
                                                     </span>
                                                 </td>
 
-                                                <td>{{ $category->posts_count }}</td>
-
-                                                <td>{{ $category->created_at->format('d M Y') }}</td>
+                                                <td>{{ $admin->created_at->format('d M Y - h:m') }}</td>
 
                                                 <!-- Actions -->
                                                 <td class="text-center">
 
                                                     <!-- Delete -->
                                                     <a href="javascript:void(0)"
-                                                        onclick="if(confirm('Do You Want Delete {{ $category->name }}?'))
-       {document.getElementById('Delete_post_{{ $category->id }}').submit()} return false"
+                                                        onclick="if(confirm('Do You Want Delete {{ $admin->name }}?'))
+       {document.getElementById('Delete_admin_{{ $admin->id }}').submit()} return false"
                                                         class="text-danger me-2">
 
-                                                        <i class="fa fa-trash" title="Delete category"></i>
+                                                        <i class="fa fa-trash" title="Delete admin"></i>
                                                     </a>
 
                                                     <!-- Status Toggle -->
-                                                    <a href="{{ route('admin.Categories.Status', $category->id) }}"
+                                                    <a href="{{ route('admin.status', $admin->id) }}"
                                                         class="text-warning me-2">
 
                                                         <i class="fa 
-            {{ $category->status == 1 ? 'fa-ban' : 'fa-unlock' }}"
-                                                            title="{{ $category->status == 1 ? 'Deactivate' : 'Activate' }}">
+            {{ $admin->status == 1 ? 'fa-ban' : 'fa-unlock' }}"
+                                                            title="{{ $admin->status == 1 ? 'Deactivate' : 'Activate' }}">
                                                         </i>
                                                     </a>
 
                                                     <!-- Edit -->
 
-                                                    <a href="#" class="text-primary" data-bs-toggle="modal"
-                                                        data-bs-target="#category-edit-{{ $category->id }}">
+                                                    <a href="{{route('admin.admin.edit',$admin->id)}}" class="text-primary" data-bs-toggle="modal"
+                                                        data-bs-target="#admin-edit-{{ $admin->id }}">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
 
@@ -126,18 +126,18 @@
 
                                             </tr>
 
-                                            <form id="Delete_category_{{ $category->id }}"
-                                                action="{{ route('admin.category.destroy', $category->id) }}"
+                                            <form id="Delete_admin_{{ $admin->id }}"
+                                                action="{{ route('admin.admin.destroy', $admin->id) }}"
                                                 method="post">
                                                 @csrf
                                                 @method('DELETE')
                                             </form>
 
-                                            @include('dashbord.adminauth.category.edit')
+                                            @include('dashbord.adminauth.admins.edit')
 
                                         @empty
                                             <tr>
-                                                <td class="alert alert-info" colspan="6">No Categories</td>
+                                                <td class="alert alert-info" colspan="6">No admins</td>
                                             </tr>
                                         @endforelse
 
@@ -146,7 +146,7 @@
                                     </tbody>
 
                                 </table>
-                                {{ $categories->appends(request()->input())->links() }}
+                                {{ $admins->appends(request()->input())->links() }}
 
                             </div>
 

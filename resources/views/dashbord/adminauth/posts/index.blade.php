@@ -1,6 +1,6 @@
 @extends('layouts.dashbord.app')
 @section('title')
-    categories Mangement
+    Posts Mangement
 @endsection
 @section('body')
     <!-- Begin Page Content -->
@@ -23,10 +23,11 @@
 
                         <!-- Header -->
                         <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Post Categories</h5>
+                            <h5 class="mb-0"> Posts Mangement
+                            </h5>
 
-                            <a class="btn btn-primary btn-sm" a href="{{ route('admin.category.create') }}">
-                                + Add New Category
+                            <a class="btn btn-primary btn-sm" a href="{{ route('admin.post.create') }}">
+                                + Add New Posts
                             </a>
                         </div>
 
@@ -44,22 +45,22 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>#</th>
-                                            <th>Name</th>
-                                            <th>Slug</th>
+                                            <th>title</th>
+                                            <th>Category</th>
                                             <th>Status</th>
-                                            <th>Post Count</th>
-                                            <th>Created At</th>
+                                            <th>num_of_views</th>
+                                            <th>User </th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
                                             <th>#</th>
-                                            <th>Name</th>
-                                            <th>Slug</th>
+                                            <th>title</th>
+                                            <th>Category</th>
                                             <th>Status</th>
-                                            <th>Post Count</th>
-                                            <th>Created At</th>
+                                            <th>num_of_views</th>
+                                            <th>User </th>
                                             <th>Actions</th>
                                         </tr>
                                     </tfoot>
@@ -67,77 +68,75 @@
                                     <tbody>
 
 
-                                        @forelse ($categories as $category)
+                                        @forelse ($posts as $post)
                                             <tr>
 
                                                 <td>{{ $loop->iteration }}</td>
 
-                                                <td>{{ $category->name }}</td>
+                                                <td>{{ $post->title }}</td>
 
-                                                <td>{{ $category->slug }}</td>
+                                                <td>{{ $post->catgegory->name }}</td>
 
                                                 <!-- Status Badge -->
                                                 <td>
                                                     <span
-                                                        class="badge {{ $category->status == 1 ? 'bg-success' : 'bg-danger' }}">
-                                                        {{ $category->status == 1 ? 'Active' : 'Not Active' }}
+                                                        class="badge {{ $post->status == 1 ? 'bg-success' : 'bg-danger' }}">
+                                                        {{ $post->status == 1 ? 'Active' : 'Not Active' }}
                                                     </span>
                                                 </td>
 
-                                                <td>{{ $category->posts_count }}</td>
+                                                <td>{{ $post->num_of_views }}</td>
+                                                <td>{{ $post->user->name ?? $post->admin->name }}</td>
 
-                                                <td>{{ $category->created_at->format('d M Y') }}</td>
+
 
                                                 <!-- Actions -->
                                                 <td class="text-center">
 
                                                     <!-- Delete -->
                                                     <a href="javascript:void(0)"
-                                                        onclick="if(confirm('Do You Want Delete {{ $category->name }}?'))
-       {document.getElementById('Delete_post_{{ $category->id }}').submit()} return false"
-                                                        class="text-danger me-2">
-
-                                                        <i class="fa fa-trash" title="Delete category"></i>
+                                                        onclick="if(confirm('Do You Want Delete {{ $post->title }} post ?')){document.getElementById('Delete_post_{{ $post->id }}').submit()} return false"
+                                                        class="text-danger me-2" title="Delete Post">
+                                                        <i class="fa fa-trash"></i>
                                                     </a>
 
                                                     <!-- Status Toggle -->
-                                                    <a href="{{ route('admin.Categories.Status', $category->id) }}"
-                                                        class="text-warning me-2">
-
-                                                        <i class="fa 
-            {{ $category->status == 1 ? 'fa-ban' : 'fa-unlock' }}"
-                                                            title="{{ $category->status == 1 ? 'Deactivate' : 'Activate' }}">
-                                                        </i>
+                                                    <a href="{{ route('admin.post.status', $post->id) }}"
+                                                        class="text-warning me-2"
+                                                        title="{{ $post->status == 1 ? 'Deactivate' : 'Activate' }}">
+                                                        <i
+                                                            class="fa {{ $post->status == 1 ? 'fa-ban' : 'fa-unlock' }}"></i>
+                                                    </a>
+                                                    <a href="{{ route('admin.post.show', $post->id) }}">
+                                                        <li class="fa fa-eye"title="show details "></li>
                                                     </a>
 
-                                                    <!-- Edit -->
-
-                                                    <a href="#" class="text-primary" data-bs-toggle="modal"
-                                                        data-bs-target="#category-edit-{{ $category->id }}">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-
-
-
+                                                    <!-- Edit posts for admin only -->
+                                                    @if ($post->user_id == null)
+                                                        <a href="{{ route('admin.post.edit', $post->id) }}"
+                                                            class="text-info me-2" title="Edit Post ">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                    @endif
 
 
                                                 </td>
 
 
+
                                             </tr>
 
-                                            <form id="Delete_category_{{ $category->id }}"
-                                                action="{{ route('admin.category.destroy', $category->id) }}"
-                                                method="post">
+                                            <form id="Delete_post_{{ $post->id }}"
+                                                action="{{ route('admin.post.destroy', $post->id) }}" method="post">
                                                 @csrf
                                                 @method('DELETE')
                                             </form>
 
-                                            @include('dashbord.adminauth.category.edit')
+
 
                                         @empty
                                             <tr>
-                                                <td class="alert alert-info" colspan="6">No Categories</td>
+                                                <td class="alert alert-info" colspan="6">No posts</td>
                                             </tr>
                                         @endforelse
 
@@ -146,7 +145,7 @@
                                     </tbody>
 
                                 </table>
-                                {{ $categories->appends(request()->input())->links() }}
+                                {{ $posts->appends(request()->input())->links() }}
 
                             </div>
 

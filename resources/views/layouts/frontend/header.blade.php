@@ -34,7 +34,7 @@
               <div class="col-lg-3 col-md-4">
                   <div class="b-logo">
                       <a href="index.html">
-                          <img src={{ asset('assets/frontend/img/logo.png') }} alt="Logo" />
+                          <img src={{ asset($getsetting->logo) }} alt="Logo" />
                       </a>
                   </div>
               </div>

@@ -24,10 +24,11 @@ class StorePostRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'min:3', 'max:500'],
             'desc' => ['required', 'min:10'],
-            'category_id' => ['exists:categories,id'],
-            'comment_able' => ['in:on,off'],
+            'category_id' => ['exists:categories,id','required'],
+            'comment_able' => ['in:on,off,1,0'],
             'images' => ['nullable'],
             'images.*' => ['image', 'mimes:jpg,jpeg,png,webp,gif|max:2048'],
+            'status'=>['nullable','in:1,0'], //  ['in:1,o] => if admin select post status 
         ];
     }
 

@@ -36,6 +36,8 @@ class CheckSettingProvider extends ServiceProvider
                 'country'=>'Egypt',
                 'city'=>'Damitta',
                 'street'=>'near nail',
+                'samll_desc'=>"welcome to our  news site ",
+                'status'=>'1',
             ]);
         });
 
