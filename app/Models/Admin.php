@@ -11,7 +11,7 @@ class Admin extends Authenticatable
 {
     use HasFactory , Notifiable;
     // protected $guarded=[];
-    protected $fillable=['id','name','user_name','email','password','status'];
+    protected $fillable=['id','name','user_name','email','password','status','role_id'];
 
      protected $hidden = [
         'password',
@@ -24,5 +24,8 @@ class Admin extends Authenticatable
     ];
     public function posts(){
         return $this->hasMany(Post::class,'admin_id');
+    }
+    public function authorizations(){
+        return $this->belongsTo(Authorization::class,'role_id');
     }
 }

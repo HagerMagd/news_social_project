@@ -98,6 +98,30 @@ Create Admin
                             @enderror
                         </div>
 
+                          <!-- Admin permissions -->
+                        <div class="mb-4">
+                            <label class="form-label">Admin permissions</label>
+                            <select class="form-select @error('status') is-invalid @enderror"
+                                    name="role_id">
+
+                                <option disabled selected>Choose permissions</option>
+                                @forelse ( $authorizations as $authorization )
+                                    <option value="{{$authorization->id}}">{{$authorization->role}}</option>
+                                @empty
+                                    <option disabled selected> No Roles </option>
+                                @endforelse
+                                
+                                
+
+                            </select>
+
+                            @error('role_id')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
                         <!-- Button -->
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary px-5">

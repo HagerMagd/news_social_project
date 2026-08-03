@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('email');
             $table->boolean('status')->default(1);
             $table->string('password');
+            $table->foreignId('role_id')->constrained('authorizations')->nullOnDelete();
             $table->rememberToken();
             $table->timestamps();
         });

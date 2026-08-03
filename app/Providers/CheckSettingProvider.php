@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Category;
 use App\Models\RelatedNewsSite;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class CheckSettingProvider extends ServiceProvider
@@ -21,33 +22,33 @@ class CheckSettingProvider extends ServiceProvider
      * Bootstrap services.
      */
     public function boot(): void
-    {
-       $getsetting= Setting::firstOr(function(){
+{
+    if (Schema::hasTable('settings')) {
+
+        $getsetting = Setting::firstOr(function () {
             return Setting::create([
-                "site_name"=>'news',
-                "logo"=>'logo',
-                "favicon"=>'defult',
-                "site_email"=>'news@gmail.com',
-                "facebook"=>'https://www.facebook.com/',
-                'twitter'=>'https://x.com/?mx=2',
-                'youtube'=>'https://www.youtube.com/',
-                'phone'=>'01289490393',
-                'instagram'=>'defult',
-                'country'=>'Egypt',
-                'city'=>'Damitta',
-                'street'=>'near nail',
-                'samll_desc'=>"welcome to our  news site ",
-                'status'=>'1',
+                "site_name" => 'news',
+                "logo" => 'logo',
+                "favicon" => 'defult',
+                "site_email" => 'news@gmail.com',
+                "facebook" => 'https://www.facebook.com/',
+                'twitter' => 'https://x.com/?mx=2',
+                'youtube' => 'https://www.youtube.com/',
+                'phone' => '01289490393',
+                'instagram' => 'defult',
+                'country' => 'Egypt',
+                'city' => 'Damitta',
+                'street' => 'near nail',
+                'samll_desc' => "welcome to our news site",
+                'status' => '1',
             ]);
         });
 
-      $getsetting -> whatsapp ='https://wa.me/'.$getsetting->phone;
-    
+        $getsetting->whatsapp = 'https://wa.me/' . $getsetting->phone;
 
         view()->share([
-            'getsetting'=> $getsetting,
-            
+            'getsetting' => $getsetting,
         ]);
-        
     }
+}
 }

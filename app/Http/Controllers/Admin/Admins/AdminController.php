@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin\Admins;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admindashboard\AdminRequest;
 use App\Models\Admin;
+use App\Models\Authorization;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
@@ -18,7 +20,7 @@ class AdminController extends Controller
         $order_by = request()->order_by ?? 'asc';
         $sort_by = request()->sort_by ?? 'id';
         $limit_by = request()->limit_by ?? 5;
-        $admins = Admin::when(request()->keyword, function ($query) {
+        $admins = Admin::where('id','!=',auth('admin')->id())->when(request()->keyword, function ($query) {
             $query->where('name', 'LIKE', '%' . request()->keyword . '%')
                 ->orWhere('email', 'LIKE', '%' . request()->keyword . '%');
         })
@@ -26,8 +28,10 @@ class AdminController extends Controller
                 $query->where('status', request()->status);
             })->orderBy($sort_by, $order_by)
             ->paginate(request($limit_by));
+            $authorizations = Authorization::select('id','role')->get();
 
-        return view('dashbord.adminauth.admins.index', compact('admins'));
+
+        return view('dashbord.adminauth.admins.index', compact('admins','authorizations'));
     }
 
     /**
@@ -35,7 +39,8 @@ class AdminController extends Controller
      */
     public function create()
     {
-        return view('dashbord.adminauth.admins.create');
+        $authorizations=Authorization::select('id','role')->get();
+        return view('dashbord.adminauth.admins.create',compact('authorizations'));
     }
 
     /**
@@ -43,7 +48,7 @@ class AdminController extends Controller
      */
     public function store(AdminRequest $request)
     {
-        $admin = Admin::create($request->validated()
+        $admin = Admin::create($request->except('_token')
            );
         if ($admin) {
             session::flash('success', "Admin Created successfully ! ");
@@ -66,15 +71,25 @@ class AdminController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $admin=Admin::findOrFail($id);
+        $authorizations=Authorization::select('id','role')->get();
+        return view('dashbord.adminauth.admins.edit',compact('authorizations','admin'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(AdminRequest $request, string $id)
     {
-        //
+        $admin=Admin::findOrFail($id);
+        $admin_update= $admin->update($request->except('_token'));
+
+        if ($admin_update) {
+            session::flash('success', "Admin updated successfully ! ");
+        }else{
+            session::flash('error', "Please Try Again ! ");
+        }
+        return redirect()->route('admin.admin.index');
     }
 
     /**

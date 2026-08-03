@@ -47,6 +47,8 @@ class UsersController extends Controller
      */
     public function store(UserRequset $request)
     {
+
+        return $request;
         try {
             DB::beginTransaction();
             $request->validated();

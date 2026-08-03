@@ -129,6 +129,20 @@
          <a class="nav-link" href="{{route('admin.category.index')}}">
              <i class="fas fa-fw fa-table"></i>
              <span>Categories</span></a>
+
+     <li class="nav-item">
+         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#authorization"
+             aria-expanded="true" aria-controls="authorization">
+             <i class="fas fa-fw fa-user"></i>
+             <span>System Roles</span>
+         </a>
+         <div id="authorization" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+             <div class="bg-white py-2 collapse-inner rounded">
+                 <a class="collapse-item" href="{{ route('admin.authorization.index') }}">Roles</a>
+                 <a class="collapse-item" href="{{ route('admin.authorization.create') }}">Add Roles</a>
+                
+             </div>
+         </div>
      </li>
 
      <!-- Divider -->

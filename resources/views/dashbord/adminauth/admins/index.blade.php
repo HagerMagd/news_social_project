@@ -49,6 +49,7 @@
                                             <th>username</th>
                                             <th>Email</th>
                                             <th>Status</th>
+                                            <th>Permations</th>
                                             <th>Created At</th>
                                             <th>Actions</th>
                                         </tr>
@@ -60,6 +61,7 @@
                                             <th>username</th>
                                             <th>Email</th>
                                             <th>Status</th>
+                                            <th>Permations</th>
                                             <th>Created At</th>
                                             <th>Actions</th>
                                         </tr>
@@ -85,6 +87,7 @@
                                                         {{ $admin->status == 1 ? 'Active' : 'Not Active' }}
                                                     </span>
                                                 </td>
+                                                <td>{{$admin->authorizations->role ?? 'No Role'}}</td>
 
                                                 <td>{{ $admin->created_at->format('d M Y - h:m') }}</td>
 

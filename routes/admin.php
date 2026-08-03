@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\User\UsersController;
 use App\Http\Controllers\Admin\Category\CategoryController;
 use App\Http\Controllers\Admin\Auth\Passwords\ResetPassword;
 use App\Http\Controllers\Admin\Auth\Passwords\ForgetPassword;
+use App\Http\Controllers\Admin\Authorization\AuthorizationController;
 use App\Http\Controllers\Admin\Settings\AdminSettingsController;
 
 /*
@@ -53,6 +54,7 @@ Route::group(['prefix' => 'admin/', 'as' => 'admin.', 'middleware' => 'auth:admi
     Route::resource('category', CategoryController::class);
     Route::resource('post',PostContoller::class);
     Route::resource('admin',AdminController::class);
+    Route::resource('authorization',AuthorizationController::class);
 
     Route::get("users/Status/{id}", [UsersController::class, 'UserStatus'])->name("user.status");
     Route::get("categories/Status/{id}", [CategoryController::class, 'CategoriesStatus'])->name("Categories.Status");

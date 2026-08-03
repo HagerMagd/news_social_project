@@ -20,6 +20,7 @@
 
                         <form action="{{ route('admin.users.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            
 
                             <!-- Row 1 -->
                             <div class="row mb-3">

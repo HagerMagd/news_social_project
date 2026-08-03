@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admindashboard;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AdminRequest extends FormRequest
+class AuthorizationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,14 +21,9 @@ class AdminRequest extends FormRequest
      */
     public function rules(): array
     {
-        $admin_id=$this->route('admin');
         return [
-            'name'=>['required','string','min:3','max:50'],
-            'user_name'=>['required','string','min:3','max:30','unique:admins,user_name,'.$admin_id],
-            'status'=>['required','in:0,1'],
-            'email'=>['email','required','unique:admins,email,'.$admin_id],
-            'password'=>['required'],
-            'role_id'=>['required','exists:authorizations,id'],
+            'role'=>['required', 'min:5','max:60'],
+            'permession'=>['required','array','min:1']
         ];
     }
 }
